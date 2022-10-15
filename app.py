@@ -85,6 +85,7 @@ class MuseFlow(L.LightningFlow):
         self.load_testing = load_testing or os.getenv("MUSE_LOAD_TESTING", False)
         self.fake_trigger = 0
         self.gpu_type = gpu_type
+        self.load_balancer_time = 60
         self._last_autoscale = time.time()
 
         # Create Drive to store Safety Checker embeddings
@@ -174,6 +175,7 @@ class MuseFlow(L.LightningFlow):
         if self.load_balancer.url:  # hack for getting the work url
             self.api_component.api_url = self.load_balancer.url
             self.dream_url = self.load_balancer.url
+            self.load_balancer_time = self.set_response_time()
             if self.slack_bot is not None:
                 self.slack_bot.run(self.load_balancer.url)
                 self.slack_bot_url = self.slack_bot.url
@@ -231,6 +233,11 @@ class MuseFlow(L.LightningFlow):
             print("new num servers:", len(self.model_servers))
             self.load_balancer.update_servers(self.model_servers)
         self._last_autoscale = time.time()
+
+    def set_response_time(self):
+        if len(self.load_balancer._response_time_queue) == 0:
+            return 60  # default to 60 seconds
+        return sum(self.load_balancer._response_time_queue) // len(self.load_balancer._response_time_queue)
 
 
 if __name__ == "__main__":

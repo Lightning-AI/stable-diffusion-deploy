@@ -27,6 +27,7 @@
 ______________________________________________________________________
 
 # Muse
+
 Open source, stable-diffusion production server to show how to deploy diffusion models in a real production environment with: load-balancing, gpu-inference, performance-testing, micro-services orchestration and more. All handled easily with the [Lightning Apps framework](https://lightning.ai/lightning-docs/).
 
 [The app is live here](https://lightning.ai/muse).
@@ -35,9 +36,9 @@ Open source, stable-diffusion production server to show how to deploy diffusion 
 
 <img width="1246" alt="image" src="https://user-images.githubusercontent.com/3640001/195984024-788255e7-d01b-4522-9655-2a3ba56e80aa.png">
 
-
 ## Model
-Muse uses the opensource Stable Diffusion model made available by [stability AI](https://stability.ai/blog/stable-diffusion-public-release). 
+
+Muse uses the opensource Stable Diffusion model made available by [stability AI](https://stability.ai/blog/stable-diffusion-public-release).
 We apply a few fancy tricks to make the inference super fast.
 
 Here's a small snippet showing our [model server](https://github.com/Lightning-AI/stable-diffusion-deploy/blob/main/muse/components/stable_diffusion_serve.py#L103-L137)
@@ -48,13 +49,13 @@ Here's a small snippet showing our [model server](https://github.com/Lightning-A
         # handle timeout
         if time.time() - entry_time > INFERENCE_REQUEST_TIMEOUT:
             raise TimeoutException()
-        
+
         # sets up the inference settings
         height = width = IMAGE_SIZE
         num_inference_steps = 50 if dreams[0].high_quality else 25
 
         prompts = [dream.prompt for dream in dreams]
-        
+
         # GPU inference
         if torch.cuda.is_available():
             with autocast("cuda"):
@@ -86,9 +87,8 @@ Here's a small snippet showing our [model server](https://github.com/Lightning-A
         return results
 ```
 
-
-
 ## Run your own
+
 To run this app locally, follow these steps:
 
 ```bash
@@ -107,6 +107,7 @@ python -m lightning run app app.py --cloud
 ```
 
 ## About this Lightning App
+
 Muse is a blueprint for building diffusion-based production systems with Lightning AI. This app shows you how to:
 <br><br>
 
