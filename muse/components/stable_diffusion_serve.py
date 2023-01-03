@@ -117,7 +117,6 @@ class StableDiffusionServe(L.LightningWork):
         return results
 
     def run(self):
-
         if False and self.safety_embeddings_filename not in self.safety_embeddings_drive.list("."):
             return
 

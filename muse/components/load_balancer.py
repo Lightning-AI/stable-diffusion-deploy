@@ -128,7 +128,6 @@ class LoadBalancer(L.LightningWork):
         self.start_fastapi_app()
 
     def start_fastapi_app(self):  # noqa: C901
-
         import uvicorn
         from fastapi import Depends, FastAPI, Header
         from fastapi.middleware.cors import CORSMiddleware
